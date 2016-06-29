@@ -28,6 +28,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 		$this->output('<div class="qa-c-item-footer">');
 		$this->post_avatar_meta_custom($c_item, 'qa-c-item');
+		$this->c_item_buttons($c_item);
 		$this->output('</div>');
 	}
 
