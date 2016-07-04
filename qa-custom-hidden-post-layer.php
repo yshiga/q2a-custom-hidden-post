@@ -74,4 +74,47 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		$this->output('</span>');
 	}
 
+	public function a_item_main($a_item)
+	{
+		$this->output('<div class="qa-a-item-main">');
+
+		if (isset($a_item['main_form_tags']))
+			$this->output('<form '.$a_item['main_form_tags'].'>'); // form for buttons on answer
+
+		if ($a_item['hidden'])
+			$this->output('<div class="qa-a-item-hidden">');
+		elseif ($a_item['selected'])
+			$this->output('<div class="qa-a-item-selected">');
+
+		$this->a_selection($a_item);
+		$this->error(@$a_item['error']);
+		// 回答が非表示でない、または、ログインしていて権限がモデレータ以上
+		// の場合は今までどおりa_item_content(本文)を表示
+		if (!@$a_item['hidden'] ||
+			(qa_is_logged_in() &&
+			qa_get_logged_in_level() >= QA_USER_LEVEL_MODERATOR)) {
+			$this->a_item_content($a_item);
+		} else {
+			// ここのボタンはいらないので削除
+			unset($a_item['form']);
+		}
+		$this->post_avatar_meta($a_item, 'qa-a-item');
+
+		if ($a_item['hidden'] || $a_item['selected'])
+			$this->output('</div>');
+
+		$this->a_item_buttons($a_item);
+
+		$this->c_list(@$a_item['c_list'], 'qa-a-item');
+
+		if (isset($a_item['main_form_tags'])) {
+			$this->form_hidden_elements(@$a_item['buttons_form_hidden']);
+			$this->output('</form>');
+		}
+
+		$this->c_form(@$a_item['c_form']);
+
+		$this->output('</div> <!-- END qa-a-item-main -->');
+	}
+
 }
