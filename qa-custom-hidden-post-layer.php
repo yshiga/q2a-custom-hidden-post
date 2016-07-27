@@ -96,7 +96,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->a_item_content($a_item);
 		} else {
 			// ここのボタンはいらないので削除
-			unset($a_item['form']);
+			// fix198
+			// ボタンがないと再表示できないのでunsetしない
+			// unset($a_item['form']);
 		}
 		$this->post_avatar_meta($a_item, 'qa-a-item');
 
